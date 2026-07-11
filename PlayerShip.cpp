@@ -1,19 +1,17 @@
 #include "PlayerShip.h"
 
 PlayerShip::PlayerShip(const sf::Vector2f& startPosition)
-    : Ship(startPosition, "C:\\Users\\jablo\\Desktop\\premiumspaceship.png"), health(100.0f), maxHealth(100.0f), healthBar(startPosition.x, startPosition.y + 50, 100, 10) { // Initial position just below the ship {
+    : Ship(startPosition, "assets/premiumspaceship.png"), health(100.0f), maxHealth(100.0f), healthBar(startPosition.x, startPosition.y + 50, 100, 10) { // Initial position just below the ship {
     sprite.setScale(0.2f, 0.2f);
-    // Initialize health bar
-    healthBarBackground.setSize(sf::Vector2f(healthBarlength, healthBarHeight)); // Size of the red  healthbar
-    healthBarBackground.setFillColor(sf::Color::Red);
 
+    // Initialize health bar
+    healthBarBackground.setSize(sf::Vector2f(healthBarlength, healthBarHeight)); // Size of the red healthbar
+    healthBarBackground.setFillColor(sf::Color::Red);
     healthBarForeground.setSize(sf::Vector2f(healthBarlength, healthBarHeight)); // Size of the green healthbar
     healthBarForeground.setFillColor(sf::Color::Green);
 }
 
 void PlayerShip::update(sf::Time dt) {
-
-
     // Get the current position of the sprite
     sf::Vector2f currentPosition = sprite.getPosition();
 
@@ -31,7 +29,6 @@ void PlayerShip::update(sf::Time dt) {
         sprite.move(0.f, 800.f * dt.asSeconds());
     }
 
-
     // Shooting bullets when spacebar is pressed and shoot interval has passed
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && shootClock.getElapsedTime() >= shootInterval) {
         shoot();
@@ -48,11 +45,13 @@ void PlayerShip::update(sf::Time dt) {
             ++it;
         }
     }
+
     updateHealthBar();
 }
 
 void PlayerShip::draw(sf::RenderWindow& window) const {
     Ship::draw(window); // Draw the ship
+
     // Draw all bullets
     for (const auto& bullet : bullets) {
         bullet.draw(window);
@@ -72,22 +71,18 @@ std::vector<Bullet>* PlayerShip::handleToContainerOnBullets() {
 }
 
 void PlayerShip::increaseHealth(float healthPoints){
-    health += healthPoints;  // Add health points
-
-
-    if (health > maxHealth) {  // Ensure health does not exceed maximum health
+    health += healthPoints; // Add health points
+    if (health > maxHealth) { // Ensure health does not exceed maximum health
         health = maxHealth;
     }
     updateHealthBar();
 }
 
 void PlayerShip::takeDamage(float damage) {
-
     health -= damage;
     if (health < 0) {
         health = 0;
     }
-
 }
 
 bool PlayerShip::isDestroyed() const {
@@ -110,7 +105,7 @@ void PlayerShip::updateHealthBar() {
     healthBarBackground.setPosition(
         currentPosition.x + (sprite.getGlobalBounds().width / 2) - (healthBarBackground.getSize().x / 2),
         currentPosition.y + sprite.getGlobalBounds().height + 10.0f
-        );
+    );
     healthBarForeground.setPosition(healthBarBackground.getPosition());
 
     // Adjust the green bar to match the current health percentage
