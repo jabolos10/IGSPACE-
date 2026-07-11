@@ -2,7 +2,6 @@
 #include <memory>
 #include <vector>
 
-#include "AnimatedBackground.h"
 #include "PlayerShip.h"
 #include "EnemyShip.h"
 #include "EnemyShip2.h"

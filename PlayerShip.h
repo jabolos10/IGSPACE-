@@ -1,6 +1,6 @@
 #pragma once
 #include "Ship.h"
-#include "HealthBar.h"
+#include "Healthbar.h"
 
 class PlayerShip : public Ship {
 public:
