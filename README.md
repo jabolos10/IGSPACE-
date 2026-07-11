@@ -1,4 +1,6 @@
-# 🚀 IGSPACE WARS
+# 🚀 Object Oriented Programming Game (C++)
+
+### IGSPACE WARS
 
 [![Watch the demo on YouTube](https://img.shields.io/badge/YouTube-Watch%20the%20demo-red?logo=youtube&logoColor=white)](https://youtu.be/odfq9dw64tE)
 [![C++](https://img.shields.io/badge/C%2B%2B-17-00599C?logo=cplusplus&logoColor=white)](https://isocpp.org/)
