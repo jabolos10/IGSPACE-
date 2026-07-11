@@ -8,69 +8,63 @@ Game::Game() : window(sf::VideoMode(windowWidth, windowHeight), "Starship War"),
     playerShips.push_back(std::make_unique<PlayerShip>(sf::Vector2f(400.f, windowHeight-270.f)));
     spawnEnemies(); // Spawn initial enemies
 
-    if (!backgroundTextureMenu.loadFromFile("C:\\Users\\jablo\\Desktop\\skybackgroundmenu.jpg")) {
+    if (!backgroundTextureMenu.loadFromFile("assets/skybackgroundmenu.jpg")) {
         std::cerr << "Error loading background texture" << std::endl;
     }
     backgroundSpriteMenu.setTexture(backgroundTextureMenu);
-    backgroundSpriteMenu.setScale(         // Scale the background to fit the window size, if necessary
+    backgroundSpriteMenu.setScale( // Scale the background to fit the window size, if necessary
         window.getSize().x / backgroundSpriteMenu.getGlobalBounds().width,
         window.getSize().y / backgroundSpriteMenu.getGlobalBounds().height
-        );
+    );
 
-
-    if (!backgroundTexture.loadFromFile("C:\\Users\\jablo\\Desktop\\skybackground.jpg")) {
+    if (!backgroundTexture.loadFromFile("assets/skybackground.jpg")) {
         std::cerr << "Error loading background texture" << std::endl;
     }
     backgroundSprite.setTexture(backgroundTexture);
     backgroundSprite.setScale(
         window.getSize().x / backgroundSprite.getGlobalBounds().width,
         window.getSize().y / backgroundSprite.getGlobalBounds().height
-        );
+    );
 
-
-    if (!backgroundTexture2.loadFromFile("C:\\Users\\jablo\\Desktop\\skybackgroundreverse.jpg")) {
+    if (!backgroundTexture2.loadFromFile("assets/skybackgroundreverse.jpg")) {
         std::cerr << "Error loading background texture" << std::endl;
     }
     backgroundSprite2.setTexture(backgroundTexture2);
     backgroundSprite2.setScale(
         window.getSize().x / backgroundSprite2.getGlobalBounds().width,
         window.getSize().y / backgroundSprite2.getGlobalBounds().height
-        );
+    );
 
     // Places second sprite directly below the first
     backgroundSprite.setPosition(0, 0);
-    backgroundSprite2.setPosition(0, backgroundSprite.getGlobalBounds().height);  //Helps with moving background of two textures
+    backgroundSprite2.setPosition(0, backgroundSprite.getGlobalBounds().height); //Helps with moving background of two textures
 
-    if (!backgroundTextureGameOver.loadFromFile("C:\\Users\\jablo\\Desktop\\gameover.jpg")) {
+    if (!backgroundTextureGameOver.loadFromFile("assets/gameover.jpg")) {
         std::cerr << "Error loading background texture" << std::endl;
         return;
     }
-
     backgroundSpriteGameOver.setTexture(backgroundTextureGameOver);
     backgroundSpriteGameOver.setScale(
         window.getSize().x / backgroundSpriteGameOver.getGlobalBounds().width,
         window.getSize().y / backgroundSpriteGameOver.getGlobalBounds().height
-        );
+    );
 
-
-
-    if (!font.loadFromFile("C:\\Users\\jablo\\Desktop\\Space Story.otf")) {
+    if (!font.loadFromFile("assets/Space Story.otf")) {
         std::cerr << "Error loading font" << std::endl;
     }
 
     // Health text properties setup
     healthText.setFont(font);
-    healthText.setCharacterSize(28); 
-    healthText.setFillColor(sf::Color::Green); 
+    healthText.setCharacterSize(28);
+    healthText.setFillColor(sf::Color::Green);
     healthText.setPosition(400.f, window.getSize().y - 50.f); // Bottom-left corner
 
     //Score text setup
     scoreText.setFont(font);
-    scoreText.setCharacterSize(28); 
+    scoreText.setCharacterSize(28);
     scoreText.setFillColor(sf::Color::Yellow);
     scoreText.setPosition(400, 10); // At the top center
     scoreText.setString("Score: 0");
-
 }
 
 void Game::handleEvents() {
@@ -79,16 +73,16 @@ void Game::handleEvents() {
         if (event.type == sf::Event::Closed) {
             window.close();
         } else if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::Enter && gameState == GameState::GameOver) {   // If GameOver when enter clicked start again in the menu
+            if (event.key.code == sf::Keyboard::Enter && gameState == GameState::GameOver) { // If GameOver when enter clicked start again in the menu
                 // Transition back to the menu when Enter is pressed
                 gameState = GameState::Menu;
-                resetGame(); 
+                resetGame();
                 playerShipDestroyed = false; // Reset playerShipDestroyed flag
-            } else if (event.key.code == sf::Keyboard::Num1 && gameState == GameState::Menu) {   // When 1 clicked start level1
+            } else if (event.key.code == sf::Keyboard::Num1 && gameState == GameState::Menu) { // When 1 clicked start level1
                 gameState = GameState::Level1;
                 resetGame();
                 spawnEnemies(); // Spawn enemies for Level 1
-            } else if (event.key.code == sf::Keyboard::Num2 && gameState == GameState::Menu) {   //When 2 clicked start level 2
+            } else if (event.key.code == sf::Keyboard::Num2 && gameState == GameState::Menu) { //When 2 clicked start level 2
                 gameState = GameState::Level2;
                 resetGame();
                 spawnEnemies2(); // Spawn enemies for Level 2
@@ -97,34 +91,27 @@ void Game::handleEvents() {
     }
 }
 
-
 void Game::spawnEnemies() {
     std::srand(static_cast<unsigned int>(std::time(nullptr))); // Randomness of enemies placement
-
     // Number of ships to spawn for each type
     int numberOfShips1 = 1;
-
-
     // Spawn the first type of enemy ships
     for (int i = 0; i < numberOfShips1; ++i) {
         float x = static_cast<float>(std::rand() % 1000); // Spawn anywhere horizontally on the screen
         float y = static_cast<float>(std::rand() % 100);// Spawn in the upper part of the screen
-        enemyShips.push_back(std::make_unique<EnemyShip>(sf::Vector2f(x, y), "C:\\Users\\jablo\\Desktop\\enemy.png"));
+        enemyShips.push_back(std::make_unique<EnemyShip>(sf::Vector2f(x, y), "assets/enemy.png"));
     }
 }
-
 
 void Game::spawnEnemies2() {
-    std::srand(static_cast<unsigned int>(std::time(nullptr))); 
-
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
     // Spawn the first type of enemy ships
     for (int i = 0; i < 1; ++i) {
-        float x = static_cast<float>(std::rand() % 1000); 
-        float y = static_cast<float>(std::rand() % 200); 
-        enemyShips2.push_back(std::make_unique<EnemyShip2>(sf::Vector2f(x, y), "C:\\Users\\jablo\\Desktop\\enemyship2.png"));
+        float x = static_cast<float>(std::rand() % 1000);
+        float y = static_cast<float>(std::rand() % 200);
+        enemyShips2.push_back(std::make_unique<EnemyShip2>(sf::Vector2f(x, y), "assets/enemyship2.png"));
     }
 }
-
 
 void Game::run() {
     sf::Time timePerFrame = sf::seconds(1.f / 60.f);
@@ -133,7 +120,6 @@ void Game::run() {
     while (window.isOpen() && running) {
         handleEvents();
         timeSinceLastUpdate += clock.restart();
-
         while (timeSinceLastUpdate > timePerFrame) {
             timeSinceLastUpdate -= timePerFrame;
             update(timePerFrame);
@@ -141,7 +127,6 @@ void Game::run() {
         render();
     }
 }
-
 
 void Game::resetGame() {
     score=0;
@@ -153,16 +138,12 @@ void Game::resetGame() {
     enemybullets2.clear();
     enemybullets2Reverse.clear();
     floatingTexts.clear();
-
     playerShips.push_back(std::make_unique<PlayerShip>(sf::Vector2f(400.f, windowHeight-270.f)));
     spawnEnemies();
-
-
 }
 
 void Game::render() {
     window.clear(); // Clear the window before drawing
-
 
     // Drawing the appropriate background
     switch (gameState) {
@@ -182,13 +163,13 @@ void Game::render() {
             bullet->draw(window);
         }
         break;
+
     case GameState::Level1:
     case GameState::Level2:
         window.draw(backgroundSprite);
         window.draw(backgroundSprite2);
         window.draw(healthText);
         window.draw(scoreText);
-
         // Drawing all of the game objects
         for (const auto& ship : playerShips) {
             ship->draw(window);
@@ -211,14 +192,15 @@ void Game::render() {
         for (const auto& bullet : enemybullets2Reverse) {
             bullet->draw(window);
         }
-
         for (const auto& text : floatingTexts) {
-            text.draw(window);      // Drawing floating texts
+            text.draw(window); // Drawing floating texts
         }
         break;
+
     case GameState::GameOver:
         window.draw(backgroundSpriteGameOver);
         break;
+
     default:
         break;
     }
@@ -227,22 +209,17 @@ void Game::render() {
 }
 
 void Game::handleCollisions() {
-
     //EnemyShip being shot by PlayerShip
     for (auto& ship : playerShips) {
         for (auto bulletIt = ship->handleToContainerOnBullets()->begin(); bulletIt != ship->handleToContainerOnBullets()->end(); ) {
             bool collisionDetected = false;
-
-
             // Iterate through enemy ships
             for (auto enemyIt = enemyShips.begin(); enemyIt != enemyShips.end(); ) {
                 // Check if the bullet collides with the enemy ship
-
                 if ((*enemyIt)->collidesWith(*bulletIt)) {
                     collisionDetected = true;
                     std::cerr << "Colision! " << std::endl;
-
-                    score += 100;    // Increase score by 100 points for EnemyShip
+                    score += 100; // Increase score by 100 points for EnemyShip
                     ship-> increaseHealth(3.0f); // Increase player's health by 10 points
                     enemyIt = enemyShips.erase(enemyIt);
 
@@ -250,27 +227,22 @@ void Game::handleCollisions() {
                     try {
                         float x = static_cast<float>(std::rand() % (static_cast<int>(windowWidth) - 200) + 100); // Show between 100 and windowWidth - 100
                         float y = static_cast<float>(std::rand() % 300 + (windowHeight - 300));// Y within lower 300 pixels of the window
-                        floatingTexts.emplace_back(sf::Vector2f(x, y), "+3%", font, sf::Color::Green, -50);  //Moving the text upwards
+                        floatingTexts.emplace_back(sf::Vector2f(x, y), "+3%", font, sf::Color::Green, -50); //Moving the text upwards
 
-
-                        float xScore = static_cast<float>(std::rand() % (static_cast<int>(windowWidth) - 200) + 100); 
-                        float yScore = static_cast<float>(std::rand() % 200); 
-                        floatingTexts.emplace_back(sf::Vector2f(xScore, yScore), "100", font, sf::Color::Yellow, -50);  
+                        float xScore = static_cast<float>(std::rand() % (static_cast<int>(windowWidth) - 200) + 100);
+                        float yScore = static_cast<float>(std::rand() % 200);
+                        floatingTexts.emplace_back(sf::Vector2f(xScore, yScore), "100", font, sf::Color::Yellow, -50);
                     } catch (const std::exception& e) {
                         std::cerr << "Exception creating FloatingText: " << e.what() << std::endl;
                     }
-
                     break; // Exit the inner loop as bullet has been removed
-
                 }
                 else {
                     ++enemyIt;
                 }
             }
-
             if (!collisionDetected) {
                 ++bulletIt;
-
             }
         }
     }
@@ -280,7 +252,6 @@ void Game::handleCollisions() {
         for (auto bulletIt = ship->handleToContainerOnBullets()->begin();
              bulletIt != ship->handleToContainerOnBullets()->end();) {
             bool collisionDetected = false;
-
             for (auto enemy2It = enemyShips2.begin(); enemy2It != enemyShips2.end();) {
                 if ((*enemy2It)->collidesWith(*bulletIt)) {
                     collisionDetected = true;
@@ -301,27 +272,25 @@ void Game::handleCollisions() {
                         try {
                             float x = static_cast<float>(std::rand() % (static_cast<int>(windowWidth) - 200) + 100); // Show between 100 and windowWidth - 100
                             float y = static_cast<float>(std::rand() % 300 + (windowHeight - 300));// Y within lower 300 pixels of the window
-                            floatingTexts.emplace_back(sf::Vector2f(x, y), "+20%", font, sf::Color::Green, -50);  //Move the text upwards
+                            floatingTexts.emplace_back(sf::Vector2f(x, y), "+20%", font, sf::Color::Green, -50); //Move the text upwards
 
-
-                            float xScore = static_cast<float>(std::rand() % (static_cast<int>(windowWidth) - 200) + 100); 
-                            float yScore = static_cast<float>(std::rand() % 200); 
+                            float xScore = static_cast<float>(std::rand() % (static_cast<int>(windowWidth) - 200) + 100);
+                            float yScore = static_cast<float>(std::rand() % 200);
                             floatingTexts.emplace_back(sf::Vector2f(xScore, yScore), "500", font, sf::Color::Yellow, -50);
                         } catch (const std::exception& e) {
                             std::cerr << "Exception creating FloatingText: " << e.what() << std::endl;
                         }
+
                         // Remove the destroyed enemy ship
                         enemy2It = enemyShips2.erase(enemy2It);
                     } else {
                         ++enemy2It;
                     }
-
                     break; // Exit the inner loop as bullet has been removed
                 } else {
                     ++enemy2It;
                 }
             }
-
             if (!collisionDetected) {
                 ++bulletIt;
             }
@@ -338,61 +307,51 @@ void Game::handleCollisions() {
                 if ((*playerIt)->collidesWithE(*enemyBulletIt)) {
                     collisionDetected = true;
                     std::cerr << "Collision detected!" << std::endl;
+                    (*playerIt)->takeDamage(10.0f); // Handle damage to the player ship
 
-                    (*playerIt)->takeDamage(10.0f);  // Handle damage to the player ship
                     try {
                         float x = static_cast<float>(std::rand() % (static_cast<int>(windowWidth) - 200) + 100); // Show between 100 and windowWidth - 100
                         float y = static_cast<float>(std::rand() % 400 + (windowHeight - 400));// Y within lower 400 pixels of the window
-                        floatingTexts.emplace_back(sf::Vector2f(x, y), "-10%", font, sf::Color::Red, 75);  //Move the text downwards
-
+                        floatingTexts.emplace_back(sf::Vector2f(x, y), "-10%", font, sf::Color::Red, 75); //Move the text downwards
                     } catch (const std::exception& e) {
                         std::cerr << "Exception creating FloatingText: " << e.what() << std::endl;
                     }
 
                     if ((*playerIt)->isDestroyed()) {
-                        playerIt = playerShips.erase(playerIt);   // Remove the player ship if it's destroyed
+                        playerIt = playerShips.erase(playerIt); // Remove the player ship if it's destroyed
                         resetGame();
                         playerShipDestroyed = true;
-
                         return; // Break the loop because there is no more source to handle
-
-
                     } else {
                         ++playerIt;
                     }
-
-                    enemyBulletIt = ship->hantleTheContainerOnEnemyBullets()->erase(enemyBulletIt);  // Remove the enemy bullet
+                    enemyBulletIt = ship->hantleTheContainerOnEnemyBullets()->erase(enemyBulletIt); // Remove the enemy bullet
                     break; // Exit the inner loop as enemy bullet has been removed
-
                 } else {
                     ++playerIt;
                 }
             }
-
             if (!collisionDetected) {
                 ++enemyBulletIt; // Move to the next bullet if no collision detected
             }
         }
     }
+
     // Handling collisions with bullets from enemyShips2
     for (auto& ship : enemyShips2) {
         for (auto enemyBulletIt = ship->hantleTheContainerOnEnemyBullets2()->begin();
              enemyBulletIt != ship->hantleTheContainerOnEnemyBullets2()->end();) {
             bool collisionDetected = false;
-
             // Iterate through player ships
             for (auto playerIt = playerShips.begin(); playerIt != playerShips.end();) {
                 if ((*playerIt)->collidesWithE2(*enemyBulletIt)) { // Checks if PlayerShip gets shot
-
                     // Handle damage to the player ship
                     (*playerIt)->takeDamage(30.0f); // Apply 30 health points damage
-                    
 
                     try {
                         float x = static_cast<float>(std::rand() % (static_cast<int>(windowWidth) - 200) + 100); // Show between 100 and windowWidth - 100
                         float y = static_cast<float>(std::rand() % 400 + (windowHeight - 400));// Y within lower 400 pixels of the window
-                        floatingTexts.emplace_back(sf::Vector2f(x, y), "-30%", font, sf::Color::Red, 75);  //Move the text downwards
-
+                        floatingTexts.emplace_back(sf::Vector2f(x, y), "-30%", font, sf::Color::Red, 75); //Move the text downwards
                     } catch (const std::exception& e) {
                         std::cerr << "Exception creating FloatingText: " << e.what() << std::endl;
                     }
@@ -403,7 +362,6 @@ void Game::handleCollisions() {
                         playerIt = playerShips.erase(playerIt);
                         resetGame();
                         playerShipDestroyed = true;
-
                         return; // Break the loop because there is no more player ship to handle
                     } else {
                         ++playerIt; // Only increment if the player ship was not destroyed
@@ -417,7 +375,6 @@ void Game::handleCollisions() {
                     ++playerIt; // Move to the next player ship if no collision detected
                 }
             }
-
             // Only move to the next bullet if no collision was detected
             if (!collisionDetected) {
                 ++enemyBulletIt;
@@ -430,15 +387,11 @@ void Game::handleCollisions() {
         for (auto enemyBulletIt = ship->hantleTheContainerOnEnemyBullets2Reverse()->begin();
              enemyBulletIt != ship->hantleTheContainerOnEnemyBullets2Reverse()->end();) {
             bool collisionDetected = false;
-
             // Iterate through player ships
             for (auto playerIt = playerShips.begin(); playerIt != playerShips.end();) {
                 if ((*playerIt)->collidesWithE2Reverse(*enemyBulletIt)) { // Checks if PlayerShip gets shot
-
                     // Handle damage to the player ship
                     (*playerIt)->takeDamage(30.0f); // Apply 30 health points damage
-
-
 
                     // Check if the player ship is destroyed
                     if ((*playerIt)->isDestroyed()) {
@@ -446,7 +399,6 @@ void Game::handleCollisions() {
                         playerIt = playerShips.erase(playerIt);
                         resetGame();
                         playerShipDestroyed = true;
-
                         return; // Break the loop because there is no more player ship to handle
                     } else {
                         ++playerIt; // Only increment if the player ship was not destroyed
@@ -460,20 +412,15 @@ void Game::handleCollisions() {
                     ++playerIt; // Move to the next player ship if no collision detected
                 }
             }
-
             // Only move to the next bullet if no collision was detected
             if (!collisionDetected) {
                 ++enemyBulletIt;
             }
         }
     }
-
 }
 
-
-
 void Game::update(sf::Time dt) {
-
     // Check if the player's ship is destroyed
     if (playerShipDestroyed) {
         gameState = GameState::GameOver;
@@ -481,7 +428,6 @@ void Game::update(sf::Time dt) {
 
     switch (gameState) {
     case GameState::Menu:
-
         for (auto& ship : playerShips) {
             ship->update(dt); // Update player ships
         }
@@ -494,7 +440,6 @@ void Game::update(sf::Time dt) {
         for (auto& bullet : enemybullets){
             bullet->update(dt);
         }
-
         // Update floating texts
         for (auto it = floatingTexts.begin(); it != floatingTexts.end(); ) {
             it->update(dt); // Update each floating text
@@ -504,12 +449,10 @@ void Game::update(sf::Time dt) {
                 ++it;
             }
         }
-
         break;
+
     case GameState::Level1:
-
         // Move both backgrounds downwards one is reversed
-
         backgroundSprite.move(0, backgroundSpeed* dt.asSeconds());
         backgroundSprite2.move(0, backgroundSpeed* dt.asSeconds());
 
@@ -517,12 +460,10 @@ void Game::update(sf::Time dt) {
         if (backgroundSprite.getPosition().y > window.getSize().y) {
             backgroundSprite.setPosition(0, backgroundSprite2.getPosition().y - backgroundSprite.getGlobalBounds().height);
         }
-
         // Check if backgroundSprite2 is completely out of view
         if (backgroundSprite2.getPosition().y > window.getSize().y) {
             backgroundSprite2.setPosition(0, backgroundSprite.getPosition().y - backgroundSprite2.getGlobalBounds().height);
         }
-
 
         for (auto& ship : playerShips) {
             ship->update(dt); // Update player ships
@@ -539,17 +480,16 @@ void Game::update(sf::Time dt) {
 
         //Spawn enemies every 3 seconds
         if (spawnClock.getElapsedTime() >= spawnInterval) {
-            spawnEnemies();                // Spawn new enemies
-            spawnClock.restart();          // Reset the spawn clock
+            spawnEnemies(); // Spawn new enemies
+            spawnClock.restart(); // Reset the spawn clock
         }
-
 
         // Update health percentage text
         if (!playerShips.empty()) {
-            float currentHealth = playerShips[0]->getHealth();  // Get the player's current health
-            float maxHealth = playerShips[0]->getMaxHealth();   // Get the player's max health
-            float healthPercentage = (currentHealth / maxHealth) * 100;  // Calculate percentage
-            healthText.setString("HP: " + std::to_string(static_cast<int>(healthPercentage)) + "%");  // Update text
+            float currentHealth = playerShips[0]->getHealth(); // Get the player's current health
+            float maxHealth = playerShips[0]->getMaxHealth(); // Get the player's max health
+            float healthPercentage = (currentHealth / maxHealth) * 100; // Calculate percentage
+            healthText.setString("HP: " + std::to_string(static_cast<int>(healthPercentage)) + "%"); // Update text
         }
 
         // Update score display
@@ -564,12 +504,12 @@ void Game::update(sf::Time dt) {
                 ++it;
             }
         }
+
         // Check for collisions
         handleCollisions();
-
         break;
-    case GameState::Level2:
 
+    case GameState::Level2:
         // Move both backgrounds downwards
         backgroundSprite.move(0, backgroundSpeed * dt.asSeconds());
         backgroundSprite2.move(0, backgroundSpeed * dt.asSeconds());
@@ -578,60 +518,50 @@ void Game::update(sf::Time dt) {
         if (backgroundSprite.getPosition().y > window.getSize().y) {
             backgroundSprite.setPosition(0, backgroundSprite2.getPosition().y - backgroundSprite.getGlobalBounds().height);
         }
-
         // Check if backgroundSprite2 is completely out of view
         if (backgroundSprite2.getPosition().y > window.getSize().y) {
             backgroundSprite2.setPosition(0, backgroundSprite.getPosition().y - backgroundSprite2.getGlobalBounds().height);
         }
 
-
         for (auto& ship : playerShips) {
             ship->update(dt); // Update player ships
         }
-
         for (auto& enemy : enemyShips) {
             enemy->update(dt); // Update enemy ships
         }
-
         for (auto& enemy : enemyShips2) {
             enemy ->update(dt);
         }
-
         for (auto& bullet : bullets) {
             bullet->update(dt); // Update bullets
         }
-
         for (auto& bullet : enemybullets){
             bullet->update(dt);
         }
-
         for (auto& bullet : enemybullets2) {
             bullet->update(dt);
         }
-
         for (auto& bullet : enemybullets2Reverse) {
             bullet->update(dt);
         }
 
-
         // Spawn enemies every 3 seconds
         if (spawnClock.getElapsedTime() >= spawnInterval) {
-            spawnEnemies();                // Spawn new enemies
-            spawnClock.restart();          // Reset the spawn clock
+            spawnEnemies(); // Spawn new enemies
+            spawnClock.restart(); // Reset the spawn clock
         }
 
         if (spawnClock2.getElapsedTime() >= spawnInterval2) {
-            spawnEnemies2();                // Spawn new enemies
-            spawnClock2.restart();          // Reset the spawn clock
+            spawnEnemies2(); // Spawn new enemies
+            spawnClock2.restart(); // Reset the spawn clock
         }
-
 
         // Update health percentage text
         if (!playerShips.empty()) {
-            float currentHealth = playerShips[0]->getHealth();  // Get the player's current health
-            float maxHealth = playerShips[0]->getMaxHealth();   // Get the player's max health
-            float healthPercentage = (currentHealth / maxHealth) * 100;  // Calculate percentage
-            healthText.setString("HP: " + std::to_string(static_cast<int>(healthPercentage)) + "%");  // Update text
+            float currentHealth = playerShips[0]->getHealth(); // Get the player's current health
+            float maxHealth = playerShips[0]->getMaxHealth(); // Get the player's max health
+            float healthPercentage = (currentHealth / maxHealth) * 100; // Calculate percentage
+            healthText.setString("HP: " + std::to_string(static_cast<int>(healthPercentage)) + "%"); // Update text
         }
 
         // Update score display
@@ -650,29 +580,23 @@ void Game::update(sf::Time dt) {
         // Check for collisions (for demonstration, assuming we want to handle collisions here)
         handleCollisions(); // This method will still perform the removal
         break;
-    case GameState::GameOver:
 
+    case GameState::GameOver:
         break;
+
     default:
         break;
     }
-
-
 
     // Update all enemy bullets
     for (auto& enemyShip : enemyShips2) {
         for (auto& bullet : enemyShip->getBullets()) { // getBullets() returns a reference to the bullet vector
             bullet.update(dt);
         }
-
         for (auto& bullet : enemyShip->getBulletsReverse()) { // getBullets() returns a reference to the bullet vector
             bullet.update(dt);
         }
-
-
     }
-
-
 
     // Example of checking if a specific bullet hit a specific enemy ship
     if (!enemyShips.empty() && !bullets.empty()) {
@@ -687,7 +611,4 @@ void Game::update(sf::Time dt) {
             std::cout << "Collision detected between the first enemy ship and the first bullet!" << std::endl;
         }
     }
-
-
-
 }
